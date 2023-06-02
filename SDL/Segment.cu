@@ -79,6 +79,7 @@ __global__ void SDL::createSegmentArrayRanges(struct modules& modulesInGPU, stru
         else if (category_number == 3 && eta_number == 2) occupancy = 79;
         else if (category_number == 3 && eta_number == 3) occupancy = 85;
 
+        occupancy *= 10; // DEBUG
 
         unsigned int nTotSegs = atomicAdd(&nTotalSegments,occupancy);
         rangesInGPU.segmentModuleIndices[i] = nTotSegs;

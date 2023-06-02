@@ -60,6 +60,8 @@ __global__ void SDL::createMDArrayRangesGPU(struct modules& modulesInGPU, struct
         else if (category_number == 3 && eta_number == 2) occupancy = 20;
         else if (category_number == 3 && eta_number == 3) occupancy = 25;
 
+        occupancy *= 10; // DEBUG
+
         unsigned int nTotMDs= atomicAdd(&nTotalMDs,occupancy);
         rangesInGPU.miniDoubletModuleIndices[i] = nTotMDs; 
         rangesInGPU.miniDoubletModuleOccupancy[i] = occupancy;

@@ -65,6 +65,8 @@ __global__ void SDL::createTripletArrayRanges(struct modules& modulesInGPU, stru
         else if (category_number == 3 && eta_number == 2) occupancy = 46;
         else if (category_number == 3 && eta_number == 3) occupancy = 39;
 
+        occupancy *= 10; // DEBUG
+
         rangesInGPU.tripletModuleOccupancy[i] = occupancy;
         unsigned int nTotT = atomicAdd(&nTotalTriplets,occupancy);
         rangesInGPU.tripletModuleIndices[i] = nTotT;

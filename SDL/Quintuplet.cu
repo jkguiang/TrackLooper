@@ -135,6 +135,8 @@ __global__ void SDL::createEligibleModulesListForQuintupletsGPU(struct modules& 
         else if (category_number == 3 && eta_number == 2) occupancy = 191;
         else if (category_number == 3 && eta_number == 3) occupancy = 106;
 
+        occupancy *= 30; // DEBUG
+
         unsigned int nTotQ = atomicAdd(&nTotalQuintupletsx,occupancy);
         rangesInGPU.quintupletModuleIndices[i] = nTotQ;
         rangesInGPU.quintupletModuleOccupancy[i] = occupancy;
@@ -440,6 +442,7 @@ __device__ bool SDL::runQuintupletDefaultAlgo(struct SDL::modules& modulesInGPU,
     regressionRadius = computeRadiusUsingRegression(5,xVec, yVec, delta1, delta2, slopes, isFlat, regressionG, regressionF, sigmas, chiSquared);
 
 #ifdef USE_T5_DNN
+    /* Commented out for training!
     unsigned int mdIndices[] = {firstMDIndex, secondMDIndex, thirdMDIndex, fourthMDIndex, fifthMDIndex};
     float inference = T5DNN::runInference(
         modulesInGPU, mdsInGPU, segmentsInGPU, tripletsInGPU, 
@@ -449,6 +452,7 @@ __device__ bool SDL::runQuintupletDefaultAlgo(struct SDL::modules& modulesInGPU,
     );
     pass = pass and (inference > T5DNN::WP95);
     TightCutFlag = TightCutFlag and (inference > T5DNN::WP82);
+    */
     if (not pass) return pass;
 #else
     // extra chi squared cuts!

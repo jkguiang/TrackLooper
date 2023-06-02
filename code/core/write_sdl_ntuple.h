@@ -25,6 +25,7 @@ void setPixelQuintupletOutputBranches(SDL::Event* event);
 void setQuintupletOutputBranches(SDL::Event* event);
 void setPixelTripletOutputBranches(SDL::Event *event);
 void setGnnNtupleBranches(SDL::Event* event);
+void setGnnNtupleTriplet(SDL::Event* event, unsigned int T3);
 void setGnnNtupleMiniDoublet(SDL::Event* event, unsigned int MD);
 
 
@@ -33,6 +34,8 @@ std::tuple<float, float, float, vector<unsigned int>, vector<unsigned int>> pars
 std::tuple<float, float, float, vector<unsigned int>, vector<unsigned int>> parsepT3(SDL::Event* event, unsigned int);
 std::tuple<float, float, float, vector<unsigned int>, vector<unsigned int>> parseT5(SDL::Event* event, unsigned int);
 std::tuple<float, float, float, vector<unsigned int>, vector<unsigned int>> parsepLS(SDL::Event* event, unsigned int);
+
+float computeRadiusFromThreeAnchorHits(float x1, float y1, float x2, float y2, float x3, float y3, float& g, float& f);
 
 // Print multiplicities
 void printMiniDoubletMultiplicities(SDL::Event* event);
