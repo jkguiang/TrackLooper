@@ -106,14 +106,14 @@ void createOptionalOutputBranches()
     ana.tx->createBranch<vector<int>>("pT3_moduleType_binary");
 
     // pLS branches
-    ana.tx->createBranch<vector<int>>("sim_pLS_matched");
-    ana.tx->createBranch<vector<vector<int>>>("sim_pLS_types");
-    ana.tx->createBranch<vector<int>>("pLS_isFake");
-    ana.tx->createBranch<vector<int>>("pLS_isDuplicate");
-    ana.tx->createBranch<vector<float>>("pLS_pt");
-    ana.tx->createBranch<vector<float>>("pLS_eta");
-    ana.tx->createBranch<vector<float>>("pLS_phi");
-    ana.tx->createBranch<vector<float>>("pLS_score");
+    // ana.tx->createBranch<vector<int>>("sim_pLS_matched");
+    // ana.tx->createBranch<vector<vector<int>>>("sim_pLS_types");
+    // ana.tx->createBranch<vector<int>>("pLS_isFake");
+    // ana.tx->createBranch<vector<int>>("pLS_isDuplicate");
+    // ana.tx->createBranch<vector<float>>("pLS_pt");
+    // ana.tx->createBranch<vector<float>>("pLS_eta");
+    // ana.tx->createBranch<vector<float>>("pLS_phi");
+    // ana.tx->createBranch<vector<float>>("pLS_score");
 
     // T5 branches
     ana.tx->createBranch<vector<int>>("sim_T5_matched");
@@ -161,6 +161,10 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("MD_1_x");
     ana.tx->createBranch<vector<float>>("MD_1_y");
     ana.tx->createBranch<vector<float>>("MD_1_z");
+    ana.tx->createBranch<vector<int>>("MD_sim_idx");
+    ana.tx->createBranch<vector<float>>("MD_sim_pt");
+    ana.tx->createBranch<vector<float>>("MD_sim_eta");
+    ana.tx->createBranch<vector<int>>("MD_n_sim_matches");
 
     // Line Segments
     ana.tx->createBranch<vector<float>>("LS_pt");
@@ -169,6 +173,22 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<int>>("LS_isFake");
     ana.tx->createBranch<vector<int>>("LS_MD_idx0");
     ana.tx->createBranch<vector<int>>("LS_MD_idx1");
+    ana.tx->createBranch<vector<int>>("LS_0_idx");
+    ana.tx->createBranch<vector<float>>("LS_0_r");
+    ana.tx->createBranch<vector<float>>("LS_0_x");
+    ana.tx->createBranch<vector<float>>("LS_0_y");
+    ana.tx->createBranch<vector<float>>("LS_0_z");
+    ana.tx->createBranch<vector<int>>("LS_0_detId");
+    ana.tx->createBranch<vector<int>>("LS_0_layer");
+    ana.tx->createBranch<vector<int>>("LS_0_moduleType");
+    ana.tx->createBranch<vector<int>>("LS_2_idx");
+    ana.tx->createBranch<vector<float>>("LS_2_r");
+    ana.tx->createBranch<vector<float>>("LS_2_x");
+    ana.tx->createBranch<vector<float>>("LS_2_y");
+    ana.tx->createBranch<vector<float>>("LS_2_z");
+    ana.tx->createBranch<vector<int>>("LS_2_detId");
+    ana.tx->createBranch<vector<int>>("LS_2_layer");
+    ana.tx->createBranch<vector<int>>("LS_2_moduleType");
     ana.tx->createBranch<vector<float>>("LS_sim_pt");
     ana.tx->createBranch<vector<float>>("LS_sim_eta");
     ana.tx->createBranch<vector<float>>("LS_sim_phi");
@@ -182,6 +202,36 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("LS_sim_vy");
     ana.tx->createBranch<vector<float>>("LS_sim_vz");
     ana.tx->createBranch<vector<int>>("LS_isInTrueTC");
+    ana.tx->createBranch<vector<int>>("t3_LS_idx0");
+    ana.tx->createBranch<vector<int>>("t3_LS_idx1");
+
+    // Pixel line segments
+    ana.tx->createBranch<vector<int>>("pLS_isFake");
+    ana.tx->createBranch<vector<int>>("pLS_sim_idx");
+    ana.tx->createBranch<vector<float>>("pLS_sim_pt");
+    ana.tx->createBranch<vector<float>>("pLS_sim_eta");
+    ana.tx->createBranch<vector<int>>("pLS_n_sim_matches");
+    ana.tx->createBranch<vector<float>>("pLS_pt");
+    ana.tx->createBranch<vector<float>>("pLS_eta");
+    ana.tx->createBranch<vector<float>>("pLS_phi");
+    ana.tx->createBranch<vector<float>>("pLS_radius");
+    ana.tx->createBranch<vector<float>>("pLS_0_x");
+    ana.tx->createBranch<vector<float>>("pLS_0_y");
+    ana.tx->createBranch<vector<float>>("pLS_0_z");
+    ana.tx->createBranch<vector<float>>("pLS_0_r");
+    ana.tx->createBranch<vector<float>>("pLS_1_x");
+    ana.tx->createBranch<vector<float>>("pLS_1_y");
+    ana.tx->createBranch<vector<float>>("pLS_1_z");
+    ana.tx->createBranch<vector<float>>("pLS_1_r");
+    ana.tx->createBranch<vector<float>>("pLS_2_x");
+    ana.tx->createBranch<vector<float>>("pLS_2_y");
+    ana.tx->createBranch<vector<float>>("pLS_2_z");
+    ana.tx->createBranch<vector<float>>("pLS_2_r");
+    ana.tx->createBranch<vector<float>>("pLS_3_x");
+    ana.tx->createBranch<vector<float>>("pLS_3_y");
+    ana.tx->createBranch<vector<float>>("pLS_3_z");
+    ana.tx->createBranch<vector<float>>("pLS_3_r");
+    ana.tx->createBranch<vector<int>>("pLS_n_hits");
 
     // TC's LS
     ana.tx->createBranch<vector<vector<int>>>("tc_lsIdx");
@@ -203,6 +253,7 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("t3_0_phi");
     ana.tx->createBranch<vector<int>>("t3_0_detId");
     ana.tx->createBranch<vector<int>>("t3_0_layer");
+    ana.tx->createBranch<vector<int>>("t3_0_moduleType");
     ana.tx->createBranch<vector<float>>("t3_2_r");
     ana.tx->createBranch<vector<float>>("t3_2_dr");
     ana.tx->createBranch<vector<float>>("t3_2_x");
@@ -212,6 +263,7 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("t3_2_phi");
     ana.tx->createBranch<vector<int>>("t3_2_detId");
     ana.tx->createBranch<vector<int>>("t3_2_layer");
+    ana.tx->createBranch<vector<int>>("t3_2_moduleType");
     ana.tx->createBranch<vector<float>>("t3_4_r");
     ana.tx->createBranch<vector<float>>("t3_4_dr");
     ana.tx->createBranch<vector<float>>("t3_4_x");
@@ -221,6 +273,7 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("t3_4_phi");
     ana.tx->createBranch<vector<int>>("t3_4_detId");
     ana.tx->createBranch<vector<int>>("t3_4_layer");
+    ana.tx->createBranch<vector<int>>("t3_4_moduleType");
 }
 
 //________________________________________________________________________________________________________________________________
@@ -604,6 +657,7 @@ void setGnnNtupleBranches(SDL::Event* event)
     // Get relevant information
     SDL::segments& segmentsInGPU = (*event->getSegments());
     SDL::miniDoublets& miniDoubletsInGPU = (*event->getMiniDoublets());
+    SDL::triplets& tripletsInGPU = (*event->getTriplets());
     SDL::quintuplets& quintupletsInGPU = (*event->getQuintuplets());
     SDL::hits& hitsInGPU = (*event->getHits());
     SDL::modules& modulesInGPU = (*event->getModules());
@@ -614,9 +668,13 @@ void setGnnNtupleBranches(SDL::Event* event)
     std::map<unsigned int, unsigned int> md_index_map;
     std::map<unsigned int, unsigned int> sg_index_map;
 
-    std::set<unsigned int> T3s_used_in_T5;
+    // std::set<unsigned int> T3s_used_in_T5;
+    // std::map<unsigned int, unsigned int> T3_index_map;
+
+    std::set<unsigned int> all_T3s;
     std::map<unsigned int, unsigned int> T3_index_map;
 
+    // Track candidates
     std::map<unsigned int, unsigned int> t5_tc_index_map;
     std::set<unsigned int> t5s_used_in_tc;
     std::set<unsigned int> lss_used_in_true_tc;
@@ -652,6 +710,71 @@ void setGnnNtupleBranches(SDL::Event* event)
     }
 
     std::cout <<  " lss_used_in_true_tc.size(): " << lss_used_in_true_tc.size() <<  std::endl;
+
+    // Pixel line segments
+    unsigned int pixel_module_idx = *(modulesInGPU.nLowerModules); // pLS's alll reside in this one "conceptual module" where all pLSs reside
+    for (unsigned int jdx = 0; jdx < segmentsInGPU.nSegments[pixel_module_idx]; jdx++)
+    {
+        // Computing pLS pT estimate (assuming beam spot is at zero)
+        std::vector<unsigned int> hits = getPixelHitsFrompLS(event, jdx);
+        float hit0_x = hitsInGPU.xs[hits[0]];
+        float hit0_y = hitsInGPU.ys[hits[0]];
+        float hit0_z = hitsInGPU.zs[hits[0]];
+        float hit0_r = sqrt(hit0_x*hit0_x + hit0_y*hit0_y);
+        float hit1_x = hitsInGPU.xs[hits[1]];
+        float hit1_y = hitsInGPU.ys[hits[1]];
+        float hit1_z = hitsInGPU.zs[hits[1]];
+        float hit1_r = sqrt(hit1_x*hit1_x + hit1_y*hit1_y);
+        float hit2_x = hitsInGPU.xs[hits[hits.size()-2]];
+        float hit2_y = hitsInGPU.ys[hits[hits.size()-2]];
+        float hit2_z = hitsInGPU.zs[hits[hits.size()-2]];
+        float hit2_r = sqrt(hit2_x*hit2_x + hit2_y*hit2_y);
+        float hit3_x = hitsInGPU.xs[hits[hits.size()-1]];
+        float hit3_y = hitsInGPU.ys[hits[hits.size()-1]];
+        float hit3_z = hitsInGPU.zs[hits[hits.size()-1]];
+        float hit3_r = sqrt(hit3_x*hit3_x + hit3_y*hit3_y);
+        SDL::CPU::Hit hitA(hit0_x, hit0_y, hit0_z);
+        SDL::CPU::Hit hitB(hit1_x, hit1_y, hit1_z);
+        SDL::CPU::Hit hitC(hit3_x, hit3_y, hit3_z);
+        SDL::CPU::Hit center = SDL::CPU::MathUtil::getCenterFromThreePoints(hitA, hitB, hitC);
+        float pt = SDL::CPU::MathUtil::ptEstimateFromRadius(center.rt());
+        float eta = hitC.eta();
+        float phi = hitB.phi();
+
+        // Get sim track matches
+        std::vector<unsigned int> hitidxs;
+        std::vector<unsigned int> hittypes;
+        std::tie(hitidxs, hittypes) = getHitIdxsAndHitTypesFrompLS(event, jdx);
+        std::vector<int> simidxs = matchedSimTrkIdxs(hitidxs, hittypes);
+
+        bool isFake = (simidxs.size() == 0);
+        ana.tx->pushbackToBranch<int>("pLS_isFake", isFake);
+        ana.tx->pushbackToBranch<int>("pLS_sim_idx", isFake ? -999 : simidxs[0]);
+        ana.tx->pushbackToBranch<float>("pLS_sim_pt", isFake ? -999 : trk.sim_pt()[simidxs[0]]);
+        ana.tx->pushbackToBranch<float>("pLS_sim_eta", isFake ? -999 : trk.sim_eta()[simidxs[0]]);
+        ana.tx->pushbackToBranch<int>("pLS_n_sim_matches", simidxs.size());
+        ana.tx->pushbackToBranch<float>("pLS_pt", pt);
+        ana.tx->pushbackToBranch<float>("pLS_eta", eta);
+        ana.tx->pushbackToBranch<float>("pLS_phi", phi);
+        ana.tx->pushbackToBranch<float>("pLS_radius", center.rt());
+        ana.tx->pushbackToBranch<float>("pLS_0_x", hit0_x);
+        ana.tx->pushbackToBranch<float>("pLS_0_y", hit0_y);
+        ana.tx->pushbackToBranch<float>("pLS_0_z", hit0_z);
+        ana.tx->pushbackToBranch<float>("pLS_0_r", hit0_r);
+        ana.tx->pushbackToBranch<float>("pLS_1_x", hit1_x);
+        ana.tx->pushbackToBranch<float>("pLS_1_y", hit1_y);
+        ana.tx->pushbackToBranch<float>("pLS_1_z", hit1_z);
+        ana.tx->pushbackToBranch<float>("pLS_1_r", hit1_r);
+        ana.tx->pushbackToBranch<float>("pLS_2_x", hit2_x);
+        ana.tx->pushbackToBranch<float>("pLS_2_y", hit2_y);
+        ana.tx->pushbackToBranch<float>("pLS_2_z", hit2_z);
+        ana.tx->pushbackToBranch<float>("pLS_2_r", hit2_r);
+        ana.tx->pushbackToBranch<float>("pLS_3_x", hit3_x);
+        ana.tx->pushbackToBranch<float>("pLS_3_y", hit3_y);
+        ana.tx->pushbackToBranch<float>("pLS_3_z", hit3_z);
+        ana.tx->pushbackToBranch<float>("pLS_3_r", hit3_r);
+        ana.tx->pushbackToBranch<int>("pLS_n_hits", hits.size());
+    }
 
     // Loop over modules (lower ones where the MDs are saved)
     unsigned int nTotalMD = 0;
@@ -695,17 +818,56 @@ void setGnnNtupleBranches(SDL::Event* event)
             float pt = SDL::CPU::MathUtil::ptEstimateFromRadius(center.rt());
             float eta = hitC.eta();
             float phi = hitB.phi();
+            
+            const int hit0 = hits[0];
+            const int hit2 = hits[2];
+            const float hit0_x = hitsInGPU.xs[hit0];
+            const float hit0_y = hitsInGPU.ys[hit0];
+            const float hit0_z = hitsInGPU.zs[hit0];
+            const float hit0_r = sqrt(hit0_x * hit0_x + hit0_y * hit0_y);
+            const float hit2_x = hitsInGPU.xs[hit2];
+            const float hit2_y = hitsInGPU.ys[hit2];
+            const float hit2_z = hitsInGPU.zs[hit2];
+            const float hit2_r = sqrt(hit2_x * hit2_x + hit2_y * hit2_y);
 
             ana.tx->pushbackToBranch<float>("LS_pt", pt);
             ana.tx->pushbackToBranch<float>("LS_eta", eta);
             ana.tx->pushbackToBranch<float>("LS_phi", phi);
+            ana.tx->pushbackToBranch<int>("LS_0_idx", hit0);
+            ana.tx->pushbackToBranch<float>("LS_0_r", hit0_r);
+            ana.tx->pushbackToBranch<float>("LS_0_x", hit0_x);
+            ana.tx->pushbackToBranch<float>("LS_0_y", hit0_y);
+            ana.tx->pushbackToBranch<float>("LS_0_z", hit0_z);
+            ana.tx->pushbackToBranch<int>("LS_2_idx", hit2);
+            ana.tx->pushbackToBranch<float>("LS_2_r", hit2_r);
+            ana.tx->pushbackToBranch<float>("LS_2_x", hit2_x);
+            ana.tx->pushbackToBranch<float>("LS_2_y", hit2_y);
+            ana.tx->pushbackToBranch<float>("LS_2_z", hit2_z);
+
+            const int hit0_subdet = trk.ph2_subdet()[hitsInGPU.idxs[hit0]];
+            const int hit0_is_endcap = hit0_subdet == 4;
+            const int hit0_layer = trk.ph2_layer()[hitsInGPU.idxs[hit0]] + 6 * (hit0_is_endcap);
+            const int hit0_detId = trk.ph2_detId()[hitsInGPU.idxs[hit0]];
+            const int hit2_subdet = trk.ph2_subdet()[hitsInGPU.idxs[hit2]];
+            const int hit2_is_endcap = hit2_subdet == 4;
+            const int hit2_layer = trk.ph2_layer()[hitsInGPU.idxs[hit2]] + 6 * (hit2_is_endcap);
+            const int hit2_detId = trk.ph2_detId()[hitsInGPU.idxs[hit2]];
+            unsigned int module0 = hitsInGPU.moduleIndices[hits[0]];
+            unsigned int module1 = hitsInGPU.moduleIndices[hits[2]];
+
+            ana.tx->pushbackToBranch<int>("LS_0_detId", hit0_detId);
+            ana.tx->pushbackToBranch<int>("LS_0_layer", hit0_layer);
+            ana.tx->pushbackToBranch<int>("LS_0_moduleType", modulesInGPU.moduleType[module0]);
+            ana.tx->pushbackToBranch<int>("LS_2_detId", hit2_detId);
+            ana.tx->pushbackToBranch<int>("LS_2_layer", hit2_layer);
+            ana.tx->pushbackToBranch<int>("LS_2_moduleType", modulesInGPU.moduleType[module1]);
 
             std::vector<unsigned int> hitidxs;
             std::vector<unsigned int> hittypes;
             std::tie(hitidxs, hittypes) = getHitIdxsAndHitTypesFromLS(event, sgIdx);
             std::vector<int> simidxs = matchedSimTrkIdxs(hitidxs, hittypes);
 
-            ana.tx->pushbackToBranch<int>("LS_isFake", simidxs.size() == 0);
+            ana.tx->pushbackToBranch<int>  ("LS_isFake", simidxs.size() == 0);
             ana.tx->pushbackToBranch<float>("LS_sim_pt"      , simidxs.size() > 0 ? trk.sim_pt           ()[simidxs[0]] : -999);
             ana.tx->pushbackToBranch<float>("LS_sim_eta"     , simidxs.size() > 0 ? trk.sim_eta          ()[simidxs[0]] : -999);
             ana.tx->pushbackToBranch<float>("LS_sim_phi"     , simidxs.size() > 0 ? trk.sim_phi          ()[simidxs[0]] : -999);
@@ -721,6 +883,24 @@ void setGnnNtupleBranches(SDL::Event* event)
             ana.tx->pushbackToBranch<int>  ("LS_isInTrueTC"  , lss_used_in_true_tc.find(sgIdx) != lss_used_in_true_tc.end());
 
             sg_index_map[sgIdx] = ana.tx->getBranch<vector<int>>("LS_isFake").size() - 1;
+        }
+
+        for (unsigned int jdx = 0; jdx < tripletsInGPU.nTriplets[idx]; jdx++)
+        {
+            unsigned int T3_idx = rangesInGPU.tripletModuleIndices[idx] + jdx;
+            if (all_T3s.find(T3_idx) == all_T3s.end())
+            {
+                all_T3s.insert(T3_idx);
+                T3_index_map[T3_idx] = all_T3s.size() - 1;
+                setGnnNtupleTriplet(event, T3_idx);
+            }
+            std::vector<unsigned int> LSs = getLSsFromT3(event, T3_idx);
+            if (LSs[0] == LSs[1]) 
+            {
+                std::cout << "ERROR: the two line segments in the T3 are supposedly the same?? " << LSs[0] << ", " << LSs[1] << std::endl;
+            }
+            ana.tx->pushbackToBranch<int>("t3_LS_idx0", sg_index_map[LSs[0]]);
+            ana.tx->pushbackToBranch<int>("t3_LS_idx1", sg_index_map[LSs[1]]);
         }
 
         // Loop over quintuplets
@@ -741,6 +921,11 @@ void setGnnNtupleBranches(SDL::Event* event)
             unsigned int T5_idx = rangesInGPU.quintupletModuleIndices[idx] + jdx;
 
             std::vector<unsigned int> T3s = getT3sFromT5(event, T5_idx);
+            ana.tx->pushbackToBranch<int>("t5_t3_idx0", T3_index_map[T3s[0]]);
+            ana.tx->pushbackToBranch<int>("t5_t3_idx1", T3_index_map[T3s[1]]);
+
+            /*
+            std::vector<unsigned int> T3s = getT3sFromT5(event, T5_idx);
             // Inner T3
             if (T3s_used_in_T5.find(T3s[0]) == T3s_used_in_T5.end())
             {
@@ -758,6 +943,7 @@ void setGnnNtupleBranches(SDL::Event* event)
 
             ana.tx->pushbackToBranch<int>("t5_t3_idx0", T3_index_map[T3s[0]]);
             ana.tx->pushbackToBranch<int>("t5_t3_idx1", T3_index_map[T3s[1]]);
+            */
             if (t5s_used_in_tc.find(T5_idx) != t5s_used_in_tc.end())
             {
                 ana.tx->pushbackToBranch<int>("t5_partOfTC", 1);
@@ -849,7 +1035,10 @@ void setGnnNtupleMiniDoublet(SDL::Event* event, unsigned int MD)
     ana.tx->pushbackToBranch<float>("MD_1_x", hit1_x);
     ana.tx->pushbackToBranch<float>("MD_1_y", hit1_y);
     ana.tx->pushbackToBranch<float>("MD_1_z", hit1_z);
-    // ana.tx->pushbackToBranch<int>("MD_sim_idx", simidxs.size() > 0 ? simidxs[0] : -999);
+    ana.tx->pushbackToBranch<int>("MD_sim_idx", isFake ? -999 : simidxs[0]);
+    ana.tx->pushbackToBranch<float>("MD_sim_pt", isFake ? -999 : trk.sim_pt()[simidxs[0]]);
+    ana.tx->pushbackToBranch<float>("MD_sim_eta", isFake ? -999 : trk.sim_eta()[simidxs[0]]);
+    ana.tx->pushbackToBranch<int>("MD_n_sim_matches", simidxs.size());
 }
 
 //________________________________________________________________________________________________________________________________
@@ -922,12 +1111,18 @@ void setGnnNtupleTriplet(SDL::Event* event, unsigned int T3)
     const int hit4_is_endcap = hit4_subdet == 4;
     const int hit4_layer = trk.ph2_layer()[hitsInGPU.idxs[hit4]] + 6 * (hit4_is_endcap);
     const int hit4_detId = trk.ph2_detId()[hitsInGPU.idxs[hit4]];
+    unsigned int module0 = hitsInGPU.moduleIndices[hits[0]];
+    unsigned int module1 = hitsInGPU.moduleIndices[hits[2]];
+    unsigned int module2 = hitsInGPU.moduleIndices[hits[4]];
     ana.tx->pushbackToBranch<int>("t3_0_detId", hit0_detId);
     ana.tx->pushbackToBranch<int>("t3_0_layer", hit0_layer);
+    ana.tx->pushbackToBranch<int>("t3_0_moduleType", modulesInGPU.moduleType[module0]);
     ana.tx->pushbackToBranch<int>("t3_2_detId", hit2_detId);
     ana.tx->pushbackToBranch<int>("t3_2_layer", hit2_layer);
+    ana.tx->pushbackToBranch<int>("t3_2_moduleType", modulesInGPU.moduleType[module1]);
     ana.tx->pushbackToBranch<int>("t3_4_detId", hit4_detId);
     ana.tx->pushbackToBranch<int>("t3_4_layer", hit4_layer);
+    ana.tx->pushbackToBranch<int>("t3_4_moduleType", modulesInGPU.moduleType[module2]);
 
     // Constants
     const float kRinv1GeVf = (2.99792458e-3 * 3.8);
