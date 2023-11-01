@@ -32,6 +32,7 @@ float runpT3(SDL::Event* event);
 
 // --------------------- ======================== ---------------------
 
+std::pair<std::vector<int>, std::vector<int>> matchedSimTrkIdxsAndCounts(std::vector<unsigned int> hitidxs, std::vector<unsigned int> hittypes, float thresh=0.75, bool verbose=false);
 std::vector<int> matchedSimTrkIdxs(std::vector<unsigned int> hitidxs, std::vector<unsigned int> hittypes, bool verbose=false);
 std::vector<int> matchedSimTrkIdxs(std::vector<int> hitidxs, std::vector<int> hittypes, bool verbose=false);
 int getDenomSimTrkType(int isimtrk);

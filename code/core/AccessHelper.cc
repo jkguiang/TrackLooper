@@ -39,10 +39,17 @@ std::vector<unsigned int> getPixelHitsFrompLS(SDL::Event* event, unsigned int pL
     unsigned int hit_2 = miniDoublets_.outerHitIndices [MD_1];
     unsigned int hit_3 = miniDoublets_.anchorHitIndices[MD_2];
     unsigned int hit_4 = miniDoublets_.outerHitIndices [MD_2];
+    // std::cout << "(anchor 1) " << miniDoublets_.anchorRt[MD_1] << ", " << "(outer 1) " << miniDoublets_.outerRt[MD_1] << ", ";
+    // std::cout << "(anchor 2) " << miniDoublets_.anchorRt[MD_2] << ", " << "(outer 2) " << miniDoublets_.outerRt[MD_2] << std::endl;
     if (hit_3 == hit_4)
+    {
+        // std::cout << "triplet pLS found!" << std::endl;
         return {hit_1, hit_2, hit_3};
+    }
     else
+    {
         return {hit_1, hit_2, hit_3, hit_4};
+    }
 }
 
 //____________________________________________________________________________________________

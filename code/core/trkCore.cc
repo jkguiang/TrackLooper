@@ -286,6 +286,13 @@ std::vector<int> matchedSimTrkIdxs(std::vector<int> hitidxs, std::vector<int> hi
 //___________________________________________________________________________________________________________________________________________________________________________________________
 std::vector<int> matchedSimTrkIdxs(std::vector<unsigned int> hitidxs, std::vector<unsigned int> hittypes, bool verbose)
 {
+    std::pair<std::vector<int>, std::vector<int>> result = matchedSimTrkIdxsAndCounts(hitidxs, hittypes, verbose);
+    return result.first;
+}
+
+//___________________________________________________________________________________________________________________________________________________________________________________________
+std::pair<std::vector<int>, std::vector<int>> matchedSimTrkIdxsAndCounts(std::vector<unsigned int> hitidxs, std::vector<unsigned int> hittypes, float thresh, bool verbose)
+{
     if (hitidxs.size() != hittypes.size())
     {
         std::cout << "Error: matched_sim_trk_idxs()   hitidxs and hittypes have different lengths" << std::endl;
@@ -435,6 +442,7 @@ std::vector<int> matchedSimTrkIdxs(std::vector<unsigned int> hitidxs, std::vecto
     }
     int maxHitMatchCount = 0; // ultimate maximum of the number of matched hits
     std::vector<int> matched_sim_trk_idxs;
+    std::map<int, int> matched_sim_trk_nhits_map; // number of matched hits per sim track
     for (auto &trkidx_perm : allperms)
     {
         std::vector<int> counts;
@@ -447,7 +455,11 @@ std::vector<int> matchedSimTrkIdxs(std::vector<unsigned int> hitidxs, std::vecto
         int rawidx = std::distance(counts.begin(), result);
         int trkidx = unique_idxs[rawidx];
         if (trkidx < 0) continue;
-        if (counts[rawidx] > (((float)nhits_input) * 0.75)) matched_sim_trk_idxs.push_back(trkidx);
+        if (counts[rawidx] > (((float)nhits_input) * thresh))
+        {
+            matched_sim_trk_idxs.push_back(trkidx);
+            matched_sim_trk_nhits_map[trkidx] = counts[rawidx];
+        }
         maxHitMatchCount = std::max(maxHitMatchCount, *std::max_element(counts.begin(), counts.end()));
     }
     set<int> s;
@@ -455,7 +467,13 @@ std::vector<int> matchedSimTrkIdxs(std::vector<unsigned int> hitidxs, std::vecto
     for (unsigned i = 0; i < size; ++i)
         s.insert(matched_sim_trk_idxs[i]);
     matched_sim_trk_idxs.assign(s.begin(), s.end());
-    return matched_sim_trk_idxs;
+
+    std::vector<int> matched_sim_trk_nhits;
+    for (auto& idx : matched_sim_trk_idxs)
+    {
+        matched_sim_trk_nhits.push_back(matched_sim_trk_nhits_map[idx]);
+    }
+    return std::make_pair(matched_sim_trk_idxs, matched_sim_trk_nhits);
 }
 
 //__________________________________________________________________________________________

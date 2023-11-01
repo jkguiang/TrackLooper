@@ -128,6 +128,8 @@ SDL::Event::~Event()
         delete[] segmentsInCPU->ptIn;
         delete[] segmentsInCPU->eta;
         delete[] segmentsInCPU->phi;
+        delete[] segmentsInCPU->charge;
+        delete[] segmentsInCPU->seedIdx;
         delete segmentsInCPU->nMemoryLocations;
         delete segmentsInCPU;
     }
@@ -358,6 +360,8 @@ void SDL::Event::resetEvent()
         delete[] segmentsInCPU->ptIn;
         delete[] segmentsInCPU->eta;
         delete[] segmentsInCPU->phi;
+        delete[] segmentsInCPU->charge;
+        delete[] segmentsInCPU->seedIdx;
         delete segmentsInCPU;
         segmentsInCPU = nullptr;
     }
@@ -1866,6 +1870,7 @@ SDL::segments* SDL::Event::getSegments()
         segmentsInCPU->ptIn = new float[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
         segmentsInCPU->eta = new float[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
         segmentsInCPU->phi = new float[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
+        segmentsInCPU->charge = new int[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
         segmentsInCPU->seedIdx = new unsigned int[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
         segmentsInCPU->isDup = new bool[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
         segmentsInCPU->isQuad = new bool[N_MAX_PIXEL_SEGMENTS_PER_MODULE];
@@ -1878,6 +1883,7 @@ SDL::segments* SDL::Event::getSegments()
         cudaMemcpyAsync(segmentsInCPU->ptIn, segmentsInGPU->ptIn, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(float), cudaMemcpyDeviceToHost,stream);
         cudaMemcpyAsync(segmentsInCPU->eta, segmentsInGPU->eta, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(float), cudaMemcpyDeviceToHost,stream);
         cudaMemcpyAsync(segmentsInCPU->phi, segmentsInGPU->phi, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(float), cudaMemcpyDeviceToHost,stream);
+        cudaMemcpyAsync(segmentsInCPU->charge, segmentsInGPU->charge, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(int), cudaMemcpyDeviceToHost,stream);
         cudaMemcpyAsync(segmentsInCPU->seedIdx, segmentsInGPU->seedIdx, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(unsigned int), cudaMemcpyDeviceToHost,stream);
         cudaMemcpyAsync(segmentsInCPU->isDup, segmentsInGPU->isDup, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(bool), cudaMemcpyDeviceToHost,stream);
         cudaMemcpyAsync(segmentsInCPU->isQuad, segmentsInGPU->isQuad, N_MAX_PIXEL_SEGMENTS_PER_MODULE * sizeof(bool), cudaMemcpyDeviceToHost,stream);
