@@ -223,6 +223,12 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("pLS_phi");
     ana.tx->createBranch<vector<float>>("pLS_radius");
     ana.tx->createBranch<vector<float>>("pLS_dz");
+    ana.tx->createBranch<vector<float>>("pLS_global_Px");
+    ana.tx->createBranch<vector<float>>("pLS_global_Py");
+    ana.tx->createBranch<vector<float>>("pLS_global_Pz");
+    ana.tx->createBranch<vector<float>>("pLS_global_x");
+    ana.tx->createBranch<vector<float>>("pLS_global_y");
+    ana.tx->createBranch<vector<float>>("pLS_global_z");
     ana.tx->createBranch<vector<int>>("pLS_charge");
     ana.tx->createBranch<vector<int>>("pLS_0_idx");
     ana.tx->createBranch<vector<float>>("pLS_0_x");
@@ -730,31 +736,6 @@ void setGnnNtupleBranches(SDL::Event* event)
     {
         const unsigned int pLS_offset = rangesInGPU.segmentModuleIndices[*(modulesInGPU.nLowerModules)]; // use to access pLS+LS Segment attributes
 
-        // Computing pLS pT estimate (assuming beam spot is at zero)
-        std::vector<unsigned int> hits = getPixelHitsFrompLS(event, jdx);
-        float hit0_x = hitsInGPU.xs[hits[0]];
-        float hit0_y = hitsInGPU.ys[hits[0]];
-        float hit0_z = hitsInGPU.zs[hits[0]];
-        float hit0_r = sqrt(hit0_x*hit0_x + hit0_y*hit0_y);
-        float hit1_x = hitsInGPU.xs[hits[1]];
-        float hit1_y = hitsInGPU.ys[hits[1]];
-        float hit1_z = hitsInGPU.zs[hits[1]];
-        float hit1_r = sqrt(hit1_x*hit1_x + hit1_y*hit1_y);
-        float hit2_x = hitsInGPU.xs[hits[hits.size()-2]];
-        float hit2_y = hitsInGPU.ys[hits[hits.size()-2]];
-        float hit2_z = hitsInGPU.zs[hits[hits.size()-2]];
-        float hit2_r = sqrt(hit2_x*hit2_x + hit2_y*hit2_y);
-        float hit3_x = hitsInGPU.xs[hits[hits.size()-1]];
-        float hit3_y = hitsInGPU.ys[hits[hits.size()-1]];
-        float hit3_z = hitsInGPU.zs[hits[hits.size()-1]];
-        float hit3_r = sqrt(hit3_x*hit3_x + hit3_y*hit3_y);
-        SDL::CPU::Hit hitA(hit0_x, hit0_y, hit0_z);
-        SDL::CPU::Hit hitB(hit1_x, hit1_y, hit1_z);
-        SDL::CPU::Hit hitC(hit3_x, hit3_y, hit3_z);
-        SDL::CPU::Hit center = SDL::CPU::MathUtil::getCenterFromThreePoints(hitA, hitB, hitC);
-        float pt = SDL::CPU::MathUtil::ptEstimateFromRadius(center.rt());
-        float eta = hitC.eta();
-        float phi = hitB.phi();
         int charge = segmentsInGPU.charge[jdx];
 
         // Get sim track matches
@@ -763,6 +744,36 @@ void setGnnNtupleBranches(SDL::Event* event)
         std::tie(hitidxs, hittypes) = getHitIdxsAndHitTypesFrompLS(event, jdx);
         std::vector<int> simidxs = matchedSimTrkIdxs(hitidxs, hittypes);
         std::pair<std::vector<int>, std::vector<int>> matches25 = matchedSimTrkIdxsAndCounts(hitidxs, hittypes, 0.25);
+
+        unsigned int hit0 = hitidxs[0];
+        unsigned int hit1 = hitidxs[1];
+        unsigned int hit2 = hitidxs[hitidxs.size()-2];
+        unsigned int hit3 = hitidxs[hitidxs.size()-1];
+        float hit0_x = hitsInGPU.xs[hit0];
+        float hit0_y = hitsInGPU.ys[hit0];
+        float hit0_z = hitsInGPU.zs[hit0];
+        float hit0_r = sqrt(hit0_x*hit0_x + hit0_y*hit0_y);
+        float hit1_x = hitsInGPU.xs[hit1];
+        float hit1_y = hitsInGPU.ys[hit1];
+        float hit1_z = hitsInGPU.zs[hit1];
+        float hit1_r = sqrt(hit1_x*hit1_x + hit1_y*hit1_y);
+        float hit2_x = hitsInGPU.xs[hit2];
+        float hit2_y = hitsInGPU.ys[hit2];
+        float hit2_z = hitsInGPU.zs[hit2];
+        float hit2_r = sqrt(hit2_x*hit2_x + hit2_y*hit2_y);
+        float hit3_x = hitsInGPU.xs[hit3];
+        float hit3_y = hitsInGPU.ys[hit3];
+        float hit3_z = hitsInGPU.zs[hit3];
+        float hit3_r = sqrt(hit3_x*hit3_x + hit3_y*hit3_y);
+
+        // Compute pLS pt
+        SDL::CPU::Hit hitA(hit0_x, hit0_y, hit0_z);
+        SDL::CPU::Hit hitB(hit1_x, hit1_y, hit1_z);
+        SDL::CPU::Hit hitC(hit3_x, hit3_y, hit3_z);
+        SDL::CPU::Hit center = SDL::CPU::MathUtil::getCenterFromThreePoints(hitA, hitB, hitC);
+        float pt = SDL::CPU::MathUtil::ptEstimateFromRadius(center.rt());
+        float eta = hitC.eta();
+        float phi = hitB.phi();
 
         // Get index in tracking ntuple
         unsigned int see_idx = segmentsInGPU.seedIdx[jdx];
@@ -780,28 +791,34 @@ void setGnnNtupleBranches(SDL::Event* event)
         ana.tx->pushbackToBranch<float>("pLS_phi", phi);
         ana.tx->pushbackToBranch<float>("pLS_radius", center.rt());
         ana.tx->pushbackToBranch<float>("pLS_dz", trk.see_dz()[see_idx]);
+        ana.tx->pushbackToBranch<float>("pLS_global_Px", trk.see_stateTrajGlbPx()[see_idx]);
+        ana.tx->pushbackToBranch<float>("pLS_global_Py", trk.see_stateTrajGlbPy()[see_idx]);
+        ana.tx->pushbackToBranch<float>("pLS_global_Pz", trk.see_stateTrajGlbPz()[see_idx]);
+        ana.tx->pushbackToBranch<float>("pLS_global_x", trk.see_stateTrajGlbX()[see_idx]);
+        ana.tx->pushbackToBranch<float>("pLS_global_y", trk.see_stateTrajGlbX()[see_idx]);
+        ana.tx->pushbackToBranch<float>("pLS_global_z", trk.see_stateTrajGlbX()[see_idx]);
         ana.tx->pushbackToBranch<int>("pLS_charge", charge);
-        ana.tx->pushbackToBranch<int>("pLS_0_idx", hitidxs[0]);
+        ana.tx->pushbackToBranch<int>("pLS_0_idx", hit0);
         ana.tx->pushbackToBranch<float>("pLS_0_x", hit0_x);
         ana.tx->pushbackToBranch<float>("pLS_0_y", hit0_y);
         ana.tx->pushbackToBranch<float>("pLS_0_z", hit0_z);
         ana.tx->pushbackToBranch<float>("pLS_0_r", hit0_r);
-        ana.tx->pushbackToBranch<int>("pLS_1_idx", hitidxs[1]);
+        ana.tx->pushbackToBranch<int>("pLS_1_idx", hit1);
         ana.tx->pushbackToBranch<float>("pLS_1_x", hit1_x);
         ana.tx->pushbackToBranch<float>("pLS_1_y", hit1_y);
         ana.tx->pushbackToBranch<float>("pLS_1_z", hit1_z);
         ana.tx->pushbackToBranch<float>("pLS_1_r", hit1_r);
-        ana.tx->pushbackToBranch<int>("pLS_2_idx", hitidxs[2]);
+        ana.tx->pushbackToBranch<int>("pLS_2_idx", hit2);
         ana.tx->pushbackToBranch<float>("pLS_2_x", hit2_x);
         ana.tx->pushbackToBranch<float>("pLS_2_y", hit2_y);
         ana.tx->pushbackToBranch<float>("pLS_2_z", hit2_z);
         ana.tx->pushbackToBranch<float>("pLS_2_r", hit2_r);
-        ana.tx->pushbackToBranch<int>("pLS_3_idx", hitidxs[3]);
+        ana.tx->pushbackToBranch<int>("pLS_3_idx", hit3);
         ana.tx->pushbackToBranch<float>("pLS_3_x", hit3_x);
         ana.tx->pushbackToBranch<float>("pLS_3_y", hit3_y);
         ana.tx->pushbackToBranch<float>("pLS_3_z", hit3_z);
         ana.tx->pushbackToBranch<float>("pLS_3_r", hit3_r);
-        ana.tx->pushbackToBranch<int>("pLS_n_hits", hits.size());
+        ana.tx->pushbackToBranch<int>("pLS_n_hits", hitidxs.size());
     }
 
     // Loop over modules (lower ones where the MDs are saved)
