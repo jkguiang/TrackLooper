@@ -286,7 +286,7 @@ std::vector<int> matchedSimTrkIdxs(std::vector<int> hitidxs, std::vector<int> hi
 //___________________________________________________________________________________________________________________________________________________________________________________________
 std::vector<int> matchedSimTrkIdxs(std::vector<unsigned int> hitidxs, std::vector<unsigned int> hittypes, bool verbose)
 {
-    std::pair<std::vector<int>, std::vector<int>> result = matchedSimTrkIdxsAndCounts(hitidxs, hittypes, verbose);
+    std::pair<std::vector<int>, std::vector<int>> result = matchedSimTrkIdxsAndCounts(hitidxs, hittypes, 0.75, verbose);
     return result.first;
 }
 

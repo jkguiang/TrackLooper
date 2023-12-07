@@ -161,6 +161,7 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<float>>("MD_1_x");
     ana.tx->createBranch<vector<float>>("MD_1_y");
     ana.tx->createBranch<vector<float>>("MD_1_z");
+    ana.tx->createBranch<vector<vector<int>>>("MD_all_sim_idx");
     ana.tx->createBranch<vector<int>>("MD_sim_idx");
     ana.tx->createBranch<vector<float>>("MD_sim_pt");
     ana.tx->createBranch<vector<float>>("MD_sim_eta");
@@ -194,6 +195,8 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<vector<int>>>("LS_all_sim_idx");
     ana.tx->createBranch<vector<vector<int>>>("LS_all_sim50_idx");
     ana.tx->createBranch<vector<vector<int>>>("LS_all_sim50_nhits");
+    ana.tx->createBranch<vector<vector<int>>>("LS_trk_hitidxs");
+    ana.tx->createBranch<vector<vector<int>>>("LS_trk_hittypes");
     ana.tx->createBranch<vector<float>>("LS_sim_pt");
     ana.tx->createBranch<vector<float>>("LS_sim_eta");
     ana.tx->createBranch<vector<float>>("LS_sim_phi");
@@ -215,6 +218,8 @@ void createGnnNtupleBranches()
     ana.tx->createBranch<vector<int>>("pLS_sim_idx");
     ana.tx->createBranch<vector<vector<int>>>("pLS_all_sim25_idx");
     ana.tx->createBranch<vector<vector<int>>>("pLS_all_sim25_nhits");
+    ana.tx->createBranch<vector<vector<int>>>("pLS_trk_hitidxs");
+    ana.tx->createBranch<vector<vector<int>>>("pLS_trk_hittypes");
     ana.tx->createBranch<vector<float>>("pLS_sim_pt");
     ana.tx->createBranch<vector<float>>("pLS_sim_eta");
     ana.tx->createBranch<vector<int>>("pLS_n_sim_matches");
@@ -749,21 +754,89 @@ void setGnnNtupleBranches(SDL::Event* event)
         unsigned int hit1 = hitidxs[1];
         unsigned int hit2 = hitidxs[hitidxs.size()-2];
         unsigned int hit3 = hitidxs[hitidxs.size()-1];
-        float hit0_x = hitsInGPU.xs[hit0];
-        float hit0_y = hitsInGPU.ys[hit0];
-        float hit0_z = hitsInGPU.zs[hit0];
+
+        float hit0_x = -999.;
+        float hit0_y = -999.;
+        float hit0_z = -999.;
+        if (hittypes[0] == 4)
+        {
+            hit0_x = trk.ph2_x()[hit0];
+            hit0_y = trk.ph2_y()[hit0]; 
+            hit0_z = trk.ph2_z()[hit0];
+        }
+        else if (hittypes[0] == 0)
+        {
+            hit0_x = trk.pix_x()[hit0];
+            hit0_y = trk.pix_y()[hit0]; 
+            hit0_z = trk.pix_z()[hit0];
+        }
+        else
+        {
+            throw std::runtime_error("hit type for pLS hit 0 is neither 0 nor 4");
+        }
         float hit0_r = sqrt(hit0_x*hit0_x + hit0_y*hit0_y);
-        float hit1_x = hitsInGPU.xs[hit1];
-        float hit1_y = hitsInGPU.ys[hit1];
-        float hit1_z = hitsInGPU.zs[hit1];
+
+        float hit1_x = -999.;
+        float hit1_y = -999.;
+        float hit1_z = -999.;
+        if (hittypes[1] == 4)
+        {
+            hit1_x = trk.ph2_x()[hit1];
+            hit1_y = trk.ph2_y()[hit1]; 
+            hit1_z = trk.ph2_z()[hit1];
+        }
+        else if (hittypes[1] == 0)
+        {
+            hit1_x = trk.pix_x()[hit1];
+            hit1_y = trk.pix_y()[hit1]; 
+            hit1_z = trk.pix_z()[hit1];
+        }
+        else
+        {
+            throw std::runtime_error("hit type for pLS hit 1 is neither 0 nor 4");
+        }
         float hit1_r = sqrt(hit1_x*hit1_x + hit1_y*hit1_y);
-        float hit2_x = hitsInGPU.xs[hit2];
-        float hit2_y = hitsInGPU.ys[hit2];
-        float hit2_z = hitsInGPU.zs[hit2];
+
+        float hit2_x = -999.;
+        float hit2_y = -999.;
+        float hit2_z = -999.;
+        if (hittypes[hittypes.size()-2] == 4)
+        {
+            hit2_x = trk.ph2_x()[hit2];
+            hit2_y = trk.ph2_y()[hit2]; 
+            hit2_z = trk.ph2_z()[hit2];
+        }
+        else if (hittypes[hittypes.size()-2] == 0)
+        {
+            hit2_x = trk.pix_x()[hit2];
+            hit2_y = trk.pix_y()[hit2]; 
+            hit2_z = trk.pix_z()[hit2];
+        }
+        else
+        {
+            throw std::runtime_error("hit type for pLS hit 2 is neither 0 nor 4");
+        }
         float hit2_r = sqrt(hit2_x*hit2_x + hit2_y*hit2_y);
-        float hit3_x = hitsInGPU.xs[hit3];
-        float hit3_y = hitsInGPU.ys[hit3];
-        float hit3_z = hitsInGPU.zs[hit3];
+
+        float hit3_x = -999.;
+        float hit3_y = -999.;
+        float hit3_z = -999.;
+        if (hittypes[hittypes.size()-1] == 4)
+        {
+            hit3_x = trk.ph2_x()[hit3];
+            hit3_y = trk.ph2_y()[hit3]; 
+            hit3_z = trk.ph2_z()[hit3];
+        }
+        else if (hittypes[hittypes.size()-1] == 0)
+        {
+            hit3_x = trk.pix_x()[hit3];
+            hit3_y = trk.pix_y()[hit3]; 
+            hit3_z = trk.pix_z()[hit3];
+        }
+        else
+        {
+            throw std::runtime_error("hit type for pLS hit 3 is neither 0 nor 4");
+        }
         float hit3_r = sqrt(hit3_x*hit3_x + hit3_y*hit3_y);
 
         // Compute pLS pt
@@ -778,11 +851,21 @@ void setGnnNtupleBranches(SDL::Event* event)
         // Get index in tracking ntuple
         unsigned int see_idx = segmentsInGPU.seedIdx[jdx];
 
+        std::vector<int> int_hitidxs;
+        std::vector<int> int_hittypes;
+        for (unsigned int hit_i = 0; hit_i < hitidxs.size(); ++hit_i)
+        {
+            int_hitidxs.push_back(int(hitidxs.at(hit_i)));
+            int_hittypes.push_back(int(hittypes.at(hit_i)));
+        }
+
         bool isFake = (simidxs.size() == 0);
         ana.tx->pushbackToBranch<int>("pLS_isFake", isFake);
         ana.tx->pushbackToBranch<int>("pLS_sim_idx", isFake ? -999 : simidxs[0]);
         ana.tx->pushbackToBranch<vector<int>>("pLS_all_sim25_idx", matches25.first);
         ana.tx->pushbackToBranch<vector<int>>("pLS_all_sim25_nhits", matches25.second);
+        ana.tx->pushbackToBranch<vector<int>>("pLS_trk_hitidxs", int_hitidxs);
+        ana.tx->pushbackToBranch<vector<int>>("pLS_trk_hittypes", int_hittypes);
         ana.tx->pushbackToBranch<float>("pLS_sim_pt", isFake ? -999 : trk.sim_pt()[simidxs[0]]);
         ana.tx->pushbackToBranch<float>("pLS_sim_eta", isFake ? -999 : trk.sim_eta()[simidxs[0]]);
         ana.tx->pushbackToBranch<int>("pLS_n_sim_matches", simidxs.size());
@@ -915,11 +998,22 @@ void setGnnNtupleBranches(SDL::Event* event)
             std::vector<int> simidxs = matchedSimTrkIdxs(hitidxs, hittypes);
             std::pair<std::vector<int>, std::vector<int>> matches50 = matchedSimTrkIdxsAndCounts(hitidxs, hittypes, 0.5);
 
+            std::vector<int> int_hitidxs;
+            std::vector<int> int_hittypes;
+
+            for (unsigned int hit_i = 0; hit_i < hitidxs.size(); ++hit_i)
+            {
+                int_hitidxs.push_back(int(hitidxs.at(hit_i)));
+                int_hittypes.push_back(int(hittypes.at(hit_i)));
+            }
+
             ana.tx->pushbackToBranch<vector<int>>("LS_all_sim_idx", simidxs);
             ana.tx->pushbackToBranch<vector<int>>("LS_all_sim50_idx", matches50.first);
             ana.tx->pushbackToBranch<vector<int>>("LS_all_sim50_nhits", matches50.second);
+            ana.tx->pushbackToBranch<vector<int>>("LS_trk_hitidxs", int_hitidxs);
+            ana.tx->pushbackToBranch<vector<int>>("LS_trk_hittypes", int_hittypes);
 
-            ana.tx->pushbackToBranch<int>  ("LS_isFake", simidxs.size() == 0);
+            ana.tx->pushbackToBranch<int>  ("LS_isFake"      , simidxs.size() == 0);
             ana.tx->pushbackToBranch<float>("LS_sim_pt"      , simidxs.size() > 0 ? trk.sim_pt           ()[simidxs[0]] : -999);
             ana.tx->pushbackToBranch<float>("LS_sim_eta"     , simidxs.size() > 0 ? trk.sim_eta          ()[simidxs[0]] : -999);
             ana.tx->pushbackToBranch<float>("LS_sim_phi"     , simidxs.size() > 0 ? trk.sim_phi          ()[simidxs[0]] : -999);
@@ -1089,6 +1183,7 @@ void setGnnNtupleMiniDoublet(SDL::Event* event, unsigned int MD)
     ana.tx->pushbackToBranch<float>("MD_1_x", hit1_x);
     ana.tx->pushbackToBranch<float>("MD_1_y", hit1_y);
     ana.tx->pushbackToBranch<float>("MD_1_z", hit1_z);
+    ana.tx->pushbackToBranch<vector<int>>("MD_all_sim_idx", simidxs);
     ana.tx->pushbackToBranch<int>("MD_sim_idx", isFake ? -999 : simidxs[0]);
     ana.tx->pushbackToBranch<float>("MD_sim_pt", isFake ? -999 : trk.sim_pt()[simidxs[0]]);
     ana.tx->pushbackToBranch<float>("MD_sim_eta", isFake ? -999 : trk.sim_eta()[simidxs[0]]);
